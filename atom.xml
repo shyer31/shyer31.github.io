@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://shyer31.github.io</id>
+    <title>Shyer</title>
+    <updated>2021-07-27T19:02:18.697Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://shyer31.github.io"/>
+    <link rel="self" href="https://shyer31.github.io/atom.xml"/>
+    <subtitle>growing apples</subtitle>
+    <logo>https://shyer31.github.io/images/avatar.png</logo>
+    <icon>https://shyer31.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2021, Shyer</rights>
+</feed>
