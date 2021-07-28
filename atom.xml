@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://shyer31.github.io</id>
     <title>Shyer</title>
-    <updated>2021-07-28T01:14:24.646Z</updated>
+    <updated>2021-07-28T10:51:54.726Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://shyer31.github.io"/>
     <link rel="self" href="https://shyer31.github.io/atom.xml"/>
@@ -10,4 +10,143 @@
     <logo>https://shyer31.github.io/images/avatar.png</logo>
     <icon>https://shyer31.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Shyer</rights>
+    <entry>
+        <title type="html"><![CDATA[原子类]]></title>
+        <id>https://shyer31.github.io/post/atomics/</id>
+        <link href="https://shyer31.github.io/post/atomics/">
+        </link>
+        <updated>2021-07-28T10:48:02.000Z</updated>
+        <summary type="html"><![CDATA[<p>本文为学习汪文君《Java 高并发编程详解 - 深入理解并发核心库》的笔记</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>本文为学习汪文君《Java 高并发编程详解 - 深入理解并发核心库》的笔记</p>
+<!--more-->
+<p>JDK1.5之前，为了确保在多线程下对某基本数据类型或引用类型数据运算的原子性，必须依赖<code>synchronized</code>关键字，JDK1.5之后，JDK官方为开发者提供了原子类型的工具集，比如<code>AtomicInteger</code>，<code>AtomicBoolean</code>等。这些原子类型都是Lock-Free及线程安全的。</p>
+<p>其实通过测试对比，监控线程状态可以发现，原子类型比如<code>AtomicInteger</code>的线程基本处于<code>RUNNABLE</code>状态，没有<code>BLOCKED</code>状态，而<code>synchronized</code>关键字则相反，<code>BLOCKED</code>的状态占比很高。</p>
+<h2 id="atomicinteger">AtomicInteger</h2>
+<p><code>AtomicInteger</code>和<code>Integer</code>一样，都继承了<code>Number</code>类。</p>
+<p><code>AtomicInteger</code>的内部有一个被<code>volatile</code>关键字修饰的成员变量<code>value</code>：</p>
+<pre><code class="language-java">private volatile int value;
+</code></pre>
+<p><code>AtomicInteger</code>提供的所有原子操作方法都是针对该变量进行操作的。</p>
+<ul>
+<li>
+<p>数字增操作</p>
+<ul>
+<li>
+<p><code>int getAndIncrement()</code></p>
+<p>返回当前<code>int</code>类型的<code>value</code>值，然后对<code>value</code>进行自增运算。</p>
+<p>单线程效果同<code>value++</code></p>
+</li>
+<li>
+<p><code>int incrementAndGet()</code></p>
+<p>直接返回自增后的<code>value</code>。</p>
+<p>单线程效果同<code>++value</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>数字减操作</p>
+<ul>
+<li>
+<p><code>int getAndDecrement()</code></p>
+<p>返回当前<code>int</code>类型<code>value</code>值，然后对<code>value</code>进行自减运算。</p>
+<p>单线程效果同<code>value--</code></p>
+</li>
+<li>
+<p><code>int decrementAndGet()</code></p>
+<p>直接返回自减后的<code>value</code>。</p>
+<p>单线程效果同<code>--value</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>数字更新操作</p>
+<ul>
+<li>
+<p><code>boolean compareAndSet(int expect, int update)</code></p>
+<p>原子性更新<code>value</code>的值，<code>expect</code>代表期望的当前<code>value</code>值，<code>update</code>代表需要设置的新值。</p>
+<p>如果当前的<code>value</code>与<code>expect</code>相同，则设置<code>value</code>为<code>update</code>，返回<code>true</code>。</p>
+<p>如果当前的<code>value</code>与<code>expect</code>不同，则不修改<code>value</code>的值，直接返回<code>false</code>。</p>
+</li>
+<li>
+<p><code>int getAndAdd(int delta)</code></p>
+<p>原子性更新<code>value</code>的值，更新后的<code>value</code>为<code>value</code>和<code>delta</code>的和，方法返回的是<code>value</code>更新前的值。</p>
+</li>
+<li>
+<p><code>int addAndGet(int delta)</code></p>
+<p>该方法与<code>getAndAdd(int delta)</code>一样，只不过返回的是<code>value</code>更新后的值。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>AtomicInteger与函数式接口</p>
+<p>JDK1.8之后增加了函数式接口，<code>AtomicInteger</code>也提供了对函数式接口的支持。</p>
+<ul>
+<li>
+<p><code>int getAndUpdate(IntUnaryOperator updateFunction)</code></p>
+<p>原子性更新<code>value</code>的值，入参为<code>IntUnaryOperator</code>接口，返回值为<code>value</code>更新前的值。</p>
+<p><code>IntUnaryOperator</code> :</p>
+<pre><code class="language-java">@FunctionalInterface
+public interface IntUnaryOperator {
+    /**
+     * Applies this operator to the given operand.
+     *
+     * @param operand the operand
+     * @return the operator result
+     */
+    int applyAsInt(int operand);
+}
+</code></pre>
+<p>使用示例 :</p>
+<pre><code class="language-java">AtomicInteger ai = new AtomicInteger(10);
+assert ai.getAndUpdate(x -&gt; x + 2) == 10;
+assert ai.get() == 12;
+</code></pre>
+</li>
+<li>
+<p><code>int updateAndGet(IntUnaryOperator updateFunction)</code></p>
+<p>与<code>int getAndUpdate(IntUnaryOperator updateFunction)</code>类似，只是返回值为<code>value</code>更新后的值。</p>
+</li>
+<li>
+<p><code>int getAndAccumulate(int x, IntBinaryOperator accumulatorFunction)</code></p>
+<p>原子性更新<code>value</code>值，返回<code>value</code>更新前的值</p>
+<pre><code class="language-java">AtomicInteger ai = new AtomicInteger(10);
+// left = 10, right = 5
+ai.getAndAccumulate(5, (left, right) -&gt; left + right - 1);
+assert ai.get() == 14;
+</code></pre>
+</li>
+<li>
+<p><code>int accumulateAndGet(int x, IntBinaryOperator accumulatorFunction)</code></p>
+<p>与<code>int getAndAccumulate(int x, IntBinaryOperator accumulatorFunction)</code>类似，只是返回<code>value</code>更新后的值。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>其他方法</p>
+<ul>
+<li>
+<p><code>void set(int newValue)</code></p>
+<p>修改<code>value</code>的值为<code>newValue</code></p>
+</li>
+<li>
+<p><code>void lazySet(int newValue)</code></p>
+<p><code>volatile</code>将<code>value</code>强制刷到主内存中，归功于<code>volatile</code>底层的内存屏障，它会在设置<code>value</code>的时候创建hanppens-before edges，而<code>lazySet</code>是通过<code>Unsafe</code>根据<code>value</code>初始化时计算出来的偏移量找到<code>value</code>的地址，然后调用本地方法进行修改，这样就不会创建hanppens-before edges，但也因此<code>lazySet</code>不能保证<code>value</code>的立即可见。PS：底层的东西其实还不太懂，后续研究，单独写一篇。</p>
+<figure data-type="image" tabindex="1"><img src="https://shyer31.github.io/post-images/1627469432064.png" alt="" loading="lazy"></figure>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CountDownLatch和CyclicBarrier]]></title>
+        <id>https://shyer31.github.io/post/countdownlatch/</id>
+        <link href="https://shyer31.github.io/post/countdownlatch/">
+        </link>
+        <updated>2021-07-28T01:16:42.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="countdownlatch">CountDownLatch</h2>
+<h2 id="cyclicbarrier">CyclicBarrier</h2>
+]]></content>
+    </entry>
 </feed>

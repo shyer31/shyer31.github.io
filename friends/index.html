@@ -9,7 +9,7 @@
 <meta name="description" content="growing apples">
 <meta name="theme-color" content="#000">
 <title>Shyer</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1627434862623">
+<link rel="shortcut icon" href="/favicon.ico?v=1627469499172">
 <link rel="stylesheet" href="/media/css/gemini.css">
 <link rel="stylesheet" href="/media/fonts/font-awesome.css">
 <link
@@ -167,19 +167,19 @@
     <div class="sidebar-item-box">
       <a href="/archives/">
         
-        <span class="site-item-stat-count">0</span>
+        <span class="site-item-stat-count">2</span>
         <span class="site-item-stat-name language" data-lan="article">文章</span>
       </a>
     </div>
     <div class="sidebar-item-box">
       <a href="">
-        <span class="site-item-stat-count">0</span>
+        <span class="site-item-stat-count">2</span>
         <span class="site-item-stat-name language" data-lan="category">分类</span>
       </a>
     </div>
     <div class="sidebar-item-box">
       <a href="/tags/">
-        <span class="site-item-stat-count">0</span>
+        <span class="site-item-stat-count">2</span>
         <span class="site-item-stat-name language" data-lan="tag">标签</span>
       </a>
     </div>
@@ -490,6 +490,137 @@
       <hr>
     </div>
     <div class="result" id="result">
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://shyer31.github.io/post/atomics/"" data-c="
+          &lt;p&gt;本文为学习汪文君《Java 高并发编程详解 - 深入理解并发核心库》的笔记&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;p&gt;JDK1.5之前，为了确保在多线程下对某基本数据类型或引用类型数据运算的原子性，必须依赖&lt;code&gt;synchronized&lt;/code&gt;关键字，JDK1.5之后，JDK官方为开发者提供了原子类型的工具集，比如&lt;code&gt;AtomicInteger&lt;/code&gt;，&lt;code&gt;AtomicBoolean&lt;/code&gt;等。这些原子类型都是Lock-Free及线程安全的。&lt;/p&gt;
+&lt;p&gt;其实通过测试对比，监控线程状态可以发现，原子类型比如&lt;code&gt;AtomicInteger&lt;/code&gt;的线程基本处于&lt;code&gt;RUNNABLE&lt;/code&gt;状态，没有&lt;code&gt;BLOCKED&lt;/code&gt;状态，而&lt;code&gt;synchronized&lt;/code&gt;关键字则相反，&lt;code&gt;BLOCKED&lt;/code&gt;的状态占比很高。&lt;/p&gt;
+&lt;h2 id=&#34;atomicinteger&#34;&gt;AtomicInteger&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;AtomicInteger&lt;/code&gt;和&lt;code&gt;Integer&lt;/code&gt;一样，都继承了&lt;code&gt;Number&lt;/code&gt;类。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;AtomicInteger&lt;/code&gt;的内部有一个被&lt;code&gt;volatile&lt;/code&gt;关键字修饰的成员变量&lt;code&gt;value&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private volatile int value;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;AtomicInteger&lt;/code&gt;提供的所有原子操作方法都是针对该变量进行操作的。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;数字增操作&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;int getAndIncrement()&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;返回当前&lt;code&gt;int&lt;/code&gt;类型的&lt;code&gt;value&lt;/code&gt;值，然后对&lt;code&gt;value&lt;/code&gt;进行自增运算。&lt;/p&gt;
+&lt;p&gt;单线程效果同&lt;code&gt;value++&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;int incrementAndGet()&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;直接返回自增后的&lt;code&gt;value&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;单线程效果同&lt;code&gt;++value&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数字减操作&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;int getAndDecrement()&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;返回当前&lt;code&gt;int&lt;/code&gt;类型&lt;code&gt;value&lt;/code&gt;值，然后对&lt;code&gt;value&lt;/code&gt;进行自减运算。&lt;/p&gt;
+&lt;p&gt;单线程效果同&lt;code&gt;value--&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;int decrementAndGet()&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;直接返回自减后的&lt;code&gt;value&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;单线程效果同&lt;code&gt;--value&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数字更新操作&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;boolean compareAndSet(int expect, int update)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;原子性更新&lt;code&gt;value&lt;/code&gt;的值，&lt;code&gt;expect&lt;/code&gt;代表期望的当前&lt;code&gt;value&lt;/code&gt;值，&lt;code&gt;update&lt;/code&gt;代表需要设置的新值。&lt;/p&gt;
+&lt;p&gt;如果当前的&lt;code&gt;value&lt;/code&gt;与&lt;code&gt;expect&lt;/code&gt;相同，则设置&lt;code&gt;value&lt;/code&gt;为&lt;code&gt;update&lt;/code&gt;，返回&lt;code&gt;true&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;如果当前的&lt;code&gt;value&lt;/code&gt;与&lt;code&gt;expect&lt;/code&gt;不同，则不修改&lt;code&gt;value&lt;/code&gt;的值，直接返回&lt;code&gt;false&lt;/code&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;int getAndAdd(int delta)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;原子性更新&lt;code&gt;value&lt;/code&gt;的值，更新后的&lt;code&gt;value&lt;/code&gt;为&lt;code&gt;value&lt;/code&gt;和&lt;code&gt;delta&lt;/code&gt;的和，方法返回的是&lt;code&gt;value&lt;/code&gt;更新前的值。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;int addAndGet(int delta)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;该方法与&lt;code&gt;getAndAdd(int delta)&lt;/code&gt;一样，只不过返回的是&lt;code&gt;value&lt;/code&gt;更新后的值。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;AtomicInteger与函数式接口&lt;/p&gt;
+&lt;p&gt;JDK1.8之后增加了函数式接口，&lt;code&gt;AtomicInteger&lt;/code&gt;也提供了对函数式接口的支持。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;int getAndUpdate(IntUnaryOperator updateFunction)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;原子性更新&lt;code&gt;value&lt;/code&gt;的值，入参为&lt;code&gt;IntUnaryOperator&lt;/code&gt;接口，返回值为&lt;code&gt;value&lt;/code&gt;更新前的值。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;IntUnaryOperator&lt;/code&gt; :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@FunctionalInterface
+public interface IntUnaryOperator {
+    /**
+     * Applies this operator to the given operand.
+     *
+     * @param operand the operand
+     * @return the operator result
+     */
+    int applyAsInt(int operand);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;使用示例 :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;AtomicInteger ai = new AtomicInteger(10);
+assert ai.getAndUpdate(x -&amp;gt; x + 2) == 10;
+assert ai.get() == 12;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;int updateAndGet(IntUnaryOperator updateFunction)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;与&lt;code&gt;int getAndUpdate(IntUnaryOperator updateFunction)&lt;/code&gt;类似，只是返回值为&lt;code&gt;value&lt;/code&gt;更新后的值。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;int getAndAccumulate(int x, IntBinaryOperator accumulatorFunction)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;原子性更新&lt;code&gt;value&lt;/code&gt;值，返回&lt;code&gt;value&lt;/code&gt;更新前的值&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;AtomicInteger ai = new AtomicInteger(10);
+// left = 10, right = 5
+ai.getAndAccumulate(5, (left, right) -&amp;gt; left + right - 1);
+assert ai.get() == 14;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;int accumulateAndGet(int x, IntBinaryOperator accumulatorFunction)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;与&lt;code&gt;int getAndAccumulate(int x, IntBinaryOperator accumulatorFunction)&lt;/code&gt;类似，只是返回&lt;code&gt;value&lt;/code&gt;更新后的值。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;其他方法&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;void set(int newValue)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;修改&lt;code&gt;value&lt;/code&gt;的值为&lt;code&gt;newValue&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;void lazySet(int newValue)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;volatile&lt;/code&gt;将&lt;code&gt;value&lt;/code&gt;强制刷到主内存中，归功于&lt;code&gt;volatile&lt;/code&gt;底层的内存屏障，它会在设置&lt;code&gt;value&lt;/code&gt;的时候创建hanppens-before edges，而&lt;code&gt;lazySet&lt;/code&gt;是通过&lt;code&gt;Unsafe&lt;/code&gt;根据&lt;code&gt;value&lt;/code&gt;初始化时计算出来的偏移量找到&lt;code&gt;value&lt;/code&gt;的地址，然后调用本地方法进行修改，这样就不会创建hanppens-before edges，但也因此&lt;code&gt;lazySet&lt;/code&gt;不能保证&lt;code&gt;value&lt;/code&gt;的立即可见。PS：底层的东西其实还不太懂，后续研究，单独写一篇。&lt;/p&gt;
+&lt;figure data-type=&#34;image&#34; tabindex=&#34;1&#34;&gt;&lt;img src=&#34;https://shyer31.github.io/post-images/1627469432064.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34;&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+">原子类</a>
+      </div>
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://shyer31.github.io/post/countdownlatch/"" data-c="
+          &lt;h2 id=&#34;countdownlatch&#34;&gt;CountDownLatch&lt;/h2&gt;
+&lt;h2 id=&#34;cyclicbarrier&#34;&gt;CyclicBarrier&lt;/h2&gt;
+">CountDownLatch和CyclicBarrier</a>
+      </div>
       
     </div>
     <div class="page">
