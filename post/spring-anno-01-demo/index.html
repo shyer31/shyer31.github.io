@@ -9,7 +9,7 @@
 <meta name="description" content="growing apples">
 <meta name="theme-color" content="#000">
 <title>Spring完全注解式开发 - 01 - demo | Shyer</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1627647927663">
+<link rel="shortcut icon" href="/favicon.ico?v=1629371923601">
 <link rel="stylesheet" href="/media/css/gemini.css">
 <link rel="stylesheet" href="/media/fonts/font-awesome.css">
 <link
@@ -201,7 +201,7 @@
     <div class="sidebar-item-box">
       <a href="/archives/">
         
-        <span class="site-item-stat-count">4</span>
+        <span class="site-item-stat-count">5</span>
         <span class="site-item-stat-name language" data-lan="article">文章</span>
       </a>
     </div>
@@ -694,6 +694,10 @@ public class HelloService {
   <div class="nav">
     <div class="nav-prev">
       
+        <i class="fa fa-chevron-left"></i>
+        <a class="nav-pc-next" title="SpringMVC 注解配置使用" href="https://shyer31.github.io/post/springmvc-anno-config/">SpringMVC 注解配置使用</a class="nav-pc-next">
+        <a class="nav-mobile-prev" title="SpringMVC 注解配置使用" href="https://shyer31.github.io/post/springmvc-anno-config/">上一篇</a>
+      
     </div>
     <div class="nav-next">
       
@@ -1160,6 +1164,158 @@ public class HelloService {
       <hr>
     </div>
     <div class="result" id="result">
+      
+      <div class="item">
+        <a class="result-title" style="opacity: 0;" href="https://shyer31.github.io/post/springmvc-anno-config/"" data-c="
+          &lt;h2 id=&#34;web配置类&#34;&gt;WEB配置类&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;取代web.xml&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+    /**
+     * Spring配置
+     */
+    @Override
+    protected Class&amp;lt;?&amp;gt;[] getRootConfigClasses() {
+        return null;
+    }
+
+    /**
+     * SpringMVC配置
+     */
+    @Override
+    protected Class&amp;lt;?&amp;gt;[] getServletConfigClasses() {
+        return new Class[]{SpringMvcConfig.class};
+    }
+
+    /**
+     * DispatcherServlet拦截路径
+     */
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{&amp;quot;/&amp;quot;};
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;编码&#34;&gt;编码&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Filter[] getServletFilters() {
+        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+        encodingFilter.setEncoding(&amp;quot;UTF-8&amp;quot;);
+        encodingFilter.setForceResponseEncoding(true);
+
+        HiddenHttpMethodFilter methodFilter = new HiddenHttpMethodFilter();
+
+        return new Filter[]{encodingFilter, methodFilter};
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;mvc配置类&#34;&gt;MVC配置类&lt;/h2&gt;
+&lt;h3 id=&#34;方式一&#34;&gt;方式一&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@EnableWebMvc
+@ComponentScan(
+	basePackages = &amp;quot;com.shyer.controller&amp;quot;
+)
+public class WebConfig {
+  
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;方式二&#34;&gt;方式二&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;实现 &lt;code&gt;WebMvcConfigurer&lt;/code&gt; 接口。可以实现该接口的方法实现扩展配置。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@EnableWebMvc
+@ComponentScan(
+        basePackages = {&amp;quot;com.shyer.controller&amp;quot;, &amp;quot;com.shyer.exception&amp;quot;}
+)
+public class SpringMvcConfig implements WebMvcConfigurer {
+  
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;方式三&#34;&gt;方式三&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;继承 &lt;code&gt;WebMvcConfigurationSupport&lt;/code&gt; 方法，这种方式可以不用配置 &lt;code&gt;@EnableWebMvc&lt;/code&gt; 注解。可以重写该类的方法实现扩展配置。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@ComponentScan(
+        basePackages = {&amp;quot;com.shyer.controller&amp;quot;, &amp;quot;com.shyer.exception&amp;quot;}
+)
+public class SpringMvcConfig extends WebMvcConfigurationSupport {
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;异常处理器&#34;&gt;异常处理器&lt;/h2&gt;
+&lt;h3 id=&#34;方式一-2&#34;&gt;方式一&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@ControllerAdvice
+public class ExceptionController {
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public String handle(Exception ex, Model model) {
+        ex.printStackTrace();
+        return &amp;quot;error&amp;quot;;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@EnableWebMvc
+@ComponentScan(
+        basePackages = {&amp;quot;com.shyer.controller&amp;quot;, &amp;quot;com.shyer.exception&amp;quot;}
+)
+public class SpringMvcConfig {
+  
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;方式二-2&#34;&gt;方式二&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@EnableWebMvc
+@ComponentScan(
+        basePackages = {&amp;quot;com.shyer.controller&amp;quot;, &amp;quot;com.shyer.exception&amp;quot;}
+)
+public class SpringMvcConfig implements WebMvcConfigurer {
+    /**
+     * 异常处理
+     */
+    @Override
+    public void configureHandlerExceptionResolvers(List&amp;lt;HandlerExceptionResolver&amp;gt; resolvers) {
+        SimpleMappingExceptionResolver exceptionResolver = new SimpleMappingExceptionResolver();
+        
+        // 异常对应的错误页面
+        Properties properties = new Properties();
+        properties.setProperty(ArithmeticException.class.getName(), &amp;quot;error&amp;quot;);
+        exceptionResolver.setExceptionMappings(properties);
+        // 异常信息在request域中的key名
+        exceptionResolver.setExceptionAttribute(&amp;quot;ex&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;拦截器&#34;&gt;拦截器&lt;/h2&gt;
+&lt;h3 id=&#34;方式一-3&#34;&gt;方式一&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class FirstInterceptor implements HandlerInterceptor {    @Override    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {        System.out.println(FirstInterceptor.class + &amp;quot; -&amp;gt; preHandle&amp;quot;);        return true;    }    @Override    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {        System.out.println(FirstInterceptor.class + &amp;quot; -&amp;gt; postHandle&amp;quot;);    }    @Override    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {        System.out.println(FirstInterceptor.class + &amp;quot; -&amp;gt; afterCompletion&amp;quot;);    }}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;方式二-3&#34;&gt;方式二&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class ThirdInterceptor implements WebRequestInterceptor {    @Override    public void preHandle(WebRequest request) throws Exception {        System.out.println(ThirdInterceptor.class + &amp;quot; -&amp;gt; preHandle&amp;quot;);    }    @Override    public void postHandle(WebRequest request, ModelMap model) throws Exception {        System.out.println(ThirdInterceptor.class + &amp;quot; -&amp;gt; postHandle&amp;quot;);    }    @Override    public void afterCompletion(WebRequest request, Exception ex) throws Exception {        System.out.println(ThirdInterceptor.class + &amp;quot; -&amp;gt; afterCompletion&amp;quot;);    }}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;生效&#34;&gt;生效&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@EnableWebMvc@ComponentScan(        basePackages = {&amp;quot;com.shyer.controller&amp;quot;, &amp;quot;com.shyer.exception&amp;quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 配置拦截器     */    @Override    public void addInterceptors(InterceptorRegistry registry) {        registry.addInterceptor(new FirstInterceptor()).addPathPatterns(&amp;quot;/**&amp;quot;);        registry.addInterceptor(new SecondInterceptor());        registry.addWebRequestInterceptor(new ThirdInterceptor());    }}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;静态资源处理&#34;&gt;静态资源处理&lt;/h2&gt;
+&lt;h3 id=&#34;配置&#34;&gt;配置&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@EnableWebMvc@ComponentScan(        basePackages = {&amp;quot;com.shyer.controller&amp;quot;, &amp;quot;com.shyer.exception&amp;quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 静态资源处理 default-servlet-handler     */    @Override    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {        configurer.enable();    }}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;视图解析器&#34;&gt;视图解析器&lt;/h2&gt;
+&lt;h3 id=&#34;html&#34;&gt;html&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这里使用的是thymeleaf模版引擎&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {    /**     * Spring配置     */    @Override    protected Class&amp;lt;?&amp;gt;[] getRootConfigClasses() {        return new Class[]{SpringConfig.class};    }}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@EnableWebMvc@ComponentScan(        basePackages = {&amp;quot;com.shyer.controller&amp;quot;, &amp;quot;com.shyer.exception&amp;quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /*****************************************************     ********************** 视图解析器 *********************     *****************************************************/    @Bean    public ITemplateResolver templateResolver() {        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(webApplicationContext.getServletContext());        templateResolver.setPrefix(&amp;quot;/WEB-INF/templates/&amp;quot;);        templateResolver.setSuffix(&amp;quot;.html&amp;quot;);        templateResolver.setCharacterEncoding(&amp;quot;UTF-8&amp;quot;);        templateResolver.setTemplateMode(TemplateMode.HTML);        return templateResolver;    }    @Bean    public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {        SpringTemplateEngine templateEngine = new SpringTemplateEngine();        templateEngine.setTemplateResolver(templateResolver);        return templateEngine;    }    @Bean    public ViewResolver viewResolver(SpringTemplateEngine templateEngine) {        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();        viewResolver.setCharacterEncoding(&amp;quot;UTF-8&amp;quot;);        viewResolver.setTemplateEngine(templateEngine);        return viewResolver;    }}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;视图控制器&#34;&gt;视图控制器&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@EnableWebMvc@ComponentScan(        basePackages = {&amp;quot;com.shyer.controller&amp;quot;, &amp;quot;com.shyer.exception&amp;quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 视图控制器     */    @Override    public void addViewControllers(ViewControllerRegistry registry) {        registry.addViewController(&amp;quot;/&amp;quot;).setViewName(&amp;quot;index&amp;quot;);    }}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;文件上传解析器&#34;&gt;文件上传解析器&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@EnableWebMvc@ComponentScan(        basePackages = {&amp;quot;com.shyer.controller&amp;quot;, &amp;quot;com.shyer.exception&amp;quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 文件上传解析器     */    @Bean    public MultipartResolver multipartResolver() {        return new CommonsMultipartResolver();    }}
+&lt;/code&gt;&lt;/pre&gt;
+">SpringMVC 注解配置使用</a>
+      </div>
       
       <div class="item">
         <a class="result-title" style="opacity: 0;" href="https://shyer31.github.io/post/spring-anno-01-demo/"" data-c="

@@ -8,7 +8,7 @@
 <meta name="keywords" content="shyer">
 <meta name="description" content="growing apples">
 <meta name="theme-color" content="#000">
-<title>原子类 | Shyer</title>
+<title>SpringMVC 注解配置使用 | Shyer</title>
 <link rel="shortcut icon" href="/favicon.ico?v=1629371923601">
 <link rel="stylesheet" href="/media/css/gemini.css">
 <link rel="stylesheet" href="/media/fonts/font-awesome.css">
@@ -41,8 +41,8 @@
 
 
 
-  <meta name="description" content="原子类" />
-  <meta name="keywords" content="Java,JUC" />
+  <meta name="description" content="SpringMVC 注解配置使用" />
+  <meta name="keywords" content="Spring5,Java" />
 </head>
 
 <body>
@@ -254,7 +254,40 @@
     <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#atomicinteger">AtomicInteger</a></li>
+<li><a href="#web%E9%85%8D%E7%BD%AE%E7%B1%BB">WEB配置类</a></li>
+<li><a href="#%E7%BC%96%E7%A0%81">编码</a></li>
+<li><a href="#mvc%E9%85%8D%E7%BD%AE%E7%B1%BB">MVC配置类</a>
+<ul>
+<li><a href="#%E6%96%B9%E5%BC%8F%E4%B8%80">方式一</a></li>
+<li><a href="#%E6%96%B9%E5%BC%8F%E4%BA%8C">方式二</a></li>
+<li><a href="#%E6%96%B9%E5%BC%8F%E4%B8%89">方式三</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%99%A8">异常处理器</a>
+<ul>
+<li><a href="#%E6%96%B9%E5%BC%8F%E4%B8%80-2">方式一</a></li>
+<li><a href="#%E6%96%B9%E5%BC%8F%E4%BA%8C-2">方式二</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8B%A6%E6%88%AA%E5%99%A8">拦截器</a>
+<ul>
+<li><a href="#%E6%96%B9%E5%BC%8F%E4%B8%80-3">方式一</a></li>
+<li><a href="#%E6%96%B9%E5%BC%8F%E4%BA%8C-3">方式二</a></li>
+<li><a href="#%E7%94%9F%E6%95%88">生效</a></li>
+</ul>
+</li>
+<li><a href="#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E5%A4%84%E7%90%86">静态资源处理</a>
+<ul>
+<li><a href="#%E9%85%8D%E7%BD%AE">配置</a></li>
+</ul>
+</li>
+<li><a href="#%E8%A7%86%E5%9B%BE%E8%A7%A3%E6%9E%90%E5%99%A8">视图解析器</a>
+<ul>
+<li><a href="#html">html</a></li>
+</ul>
+</li>
+<li><a href="#%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8">视图控制器</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E8%A7%A3%E6%9E%90%E5%99%A8">文件上传解析器</a></li>
 </ul>
 </li>
 </ul>
@@ -522,8 +555,8 @@
           <div class="section bg-color post post-page">
             <section class="post-header">
   <h1 class="post-title">
-    <a class="post-title-link" href="https://shyer31.github.io/post/atomics/">
-      原子类
+    <a class="post-title-link" href="https://shyer31.github.io/post/springmvc-anno-config/">
+      SpringMVC 注解配置使用
     </a>
   </h1>
   <div class="post-meta">
@@ -531,7 +564,7 @@
     <span class="meta-item pc-show">
       <i class="fa fa-calendar-o"></i>
       <span class="language" data-lan="publish">发布于</span>
-      <span class="publish-time" data-t="2021-07-28 18:48:02">2021-07-28</span>
+      <span class="publish-time" data-t="2021-08-19 19:17:39">2021-08-19</span>
       <span class="post-meta-divider pc-show">|</span>
     </span>
     
@@ -540,14 +573,14 @@
       <span class="pc-show language" data-lan="category-in">分类于</span>
       
       
-      <a href="https://shyer31.github.io/tag/java/">
-        <span>Java</span>
+      <a href="https://shyer31.github.io/tag/spring5/">
+        <span>Spring5</span>
       </a>、
       
       
       
-      <a href="https://shyer31.github.io/tag/juc/">
-        <span>JUC</span>
+      <a href="https://shyer31.github.io/tag/java/">
+        <span>Java</span>
       </a>
       
       
@@ -556,17 +589,17 @@
     
     <span class="meta-item">
       <i class="fa fa-clock-o"></i>
-      <span>4<span class="language" data-lan="minute">分钟</span></span>
+      <span>5<span class="language" data-lan="minute">分钟</span></span>
     </span>
     <span class="meta-item">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-file-word-o"></i>
-      <span>792<span class="pc-show language" data-lan="words">字数</span></span>
+      <span>766<span class="pc-show language" data-lan="words">字数</span></span>
     </span>
     
     
     
-    <span id="/post/atomics/" data-flag-title="原子类" class="meta-item pc-show leancloud_visitors">
+    <span id="/post/springmvc-anno-config/" data-flag-title="SpringMVC 注解配置使用" class="meta-item pc-show leancloud_visitors">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-eye"></i>
       <span><span class="language" data-lan="view">浏览量</span>：<span class="leancloud-visitors-count"></span></span>
@@ -575,125 +608,153 @@
   </div>
 </section>
             <div class="post-body next-md-body" id="post_body">
-              <p>本文为学习汪文君《Java 高并发编程详解 - 深入理解并发核心库》的笔记</p>
-<!--more-->
-<p>JDK1.5之前，为了确保在多线程下对某基本数据类型或引用类型数据运算的原子性，必须依赖<code>synchronized</code>关键字，JDK1.5之后，JDK官方为开发者提供了原子类型的工具集，比如<code>AtomicInteger</code>，<code>AtomicBoolean</code>等。这些原子类型都是Lock-Free及线程安全的。</p>
-<p>其实通过测试对比，监控线程状态可以发现，原子类型比如<code>AtomicInteger</code>的线程基本处于<code>RUNNABLE</code>状态，没有<code>BLOCKED</code>状态，而<code>synchronized</code>关键字则相反，<code>BLOCKED</code>的状态占比很高。</p>
-<h2 id="atomicinteger">AtomicInteger</h2>
-<p><code>AtomicInteger</code>和<code>Integer</code>一样，都继承了<code>Number</code>类。</p>
-<p><code>AtomicInteger</code>的内部有一个被<code>volatile</code>关键字修饰的成员变量<code>value</code>：</p>
-<pre><code class="language-java">private volatile int value;
-</code></pre>
-<p><code>AtomicInteger</code>提供的所有原子操作方法都是针对该变量进行操作的。</p>
-<ul>
-<li>
-<p>数字增操作</p>
-<ul>
-<li>
-<p><code>int getAndIncrement()</code></p>
-<p>返回当前<code>int</code>类型的<code>value</code>值，然后对<code>value</code>进行自增运算。</p>
-<p>单线程效果同<code>value++</code></p>
-</li>
-<li>
-<p><code>int incrementAndGet()</code></p>
-<p>直接返回自增后的<code>value</code>。</p>
-<p>单线程效果同<code>++value</code></p>
-</li>
-</ul>
-</li>
-<li>
-<p>数字减操作</p>
-<ul>
-<li>
-<p><code>int getAndDecrement()</code></p>
-<p>返回当前<code>int</code>类型<code>value</code>值，然后对<code>value</code>进行自减运算。</p>
-<p>单线程效果同<code>value--</code></p>
-</li>
-<li>
-<p><code>int decrementAndGet()</code></p>
-<p>直接返回自减后的<code>value</code>。</p>
-<p>单线程效果同<code>--value</code></p>
-</li>
-</ul>
-</li>
-<li>
-<p>数字更新操作</p>
-<ul>
-<li>
-<p><code>boolean compareAndSet(int expect, int update)</code></p>
-<p>原子性更新<code>value</code>的值，<code>expect</code>代表期望的当前<code>value</code>值，<code>update</code>代表需要设置的新值。</p>
-<p>如果当前的<code>value</code>与<code>expect</code>相同，则设置<code>value</code>为<code>update</code>，返回<code>true</code>。</p>
-<p>如果当前的<code>value</code>与<code>expect</code>不同，则不修改<code>value</code>的值，直接返回<code>false</code>。</p>
-</li>
-<li>
-<p><code>int getAndAdd(int delta)</code></p>
-<p>原子性更新<code>value</code>的值，更新后的<code>value</code>为<code>value</code>和<code>delta</code>的和，方法返回的是<code>value</code>更新前的值。</p>
-</li>
-<li>
-<p><code>int addAndGet(int delta)</code></p>
-<p>该方法与<code>getAndAdd(int delta)</code>一样，只不过返回的是<code>value</code>更新后的值。</p>
-</li>
-</ul>
-</li>
-<li>
-<p>AtomicInteger与函数式接口</p>
-<p>JDK1.8之后增加了函数式接口，<code>AtomicInteger</code>也提供了对函数式接口的支持。</p>
-<ul>
-<li>
-<p><code>int getAndUpdate(IntUnaryOperator updateFunction)</code></p>
-<p>原子性更新<code>value</code>的值，入参为<code>IntUnaryOperator</code>接口，返回值为<code>value</code>更新前的值。</p>
-<p><code>IntUnaryOperator</code> :</p>
-<pre><code class="language-java">@FunctionalInterface
-public interface IntUnaryOperator {
+              <h2 id="web配置类">WEB配置类</h2>
+<blockquote>
+<p>取代web.xml</p>
+</blockquote>
+<pre><code class="language-java">public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     /**
-     * Applies this operator to the given operand.
-     *
-     * @param operand the operand
-     * @return the operator result
+     * Spring配置
      */
-    int applyAsInt(int operand);
+    @Override
+    protected Class&lt;?&gt;[] getRootConfigClasses() {
+        return null;
+    }
+
+    /**
+     * SpringMVC配置
+     */
+    @Override
+    protected Class&lt;?&gt;[] getServletConfigClasses() {
+        return new Class[]{SpringMvcConfig.class};
+    }
+
+    /**
+     * DispatcherServlet拦截路径
+     */
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{&quot;/&quot;};
+    }
 }
 </code></pre>
-<p>使用示例 :</p>
-<pre><code class="language-java">AtomicInteger ai = new AtomicInteger(10);
-assert ai.getAndUpdate(x -&gt; x + 2) == 10;
-assert ai.get() == 12;
+<h2 id="编码">编码</h2>
+<pre><code class="language-java">public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Filter[] getServletFilters() {
+        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+        encodingFilter.setEncoding(&quot;UTF-8&quot;);
+        encodingFilter.setForceResponseEncoding(true);
+
+        HiddenHttpMethodFilter methodFilter = new HiddenHttpMethodFilter();
+
+        return new Filter[]{encodingFilter, methodFilter};
+    }
+}
 </code></pre>
-</li>
-<li>
-<p><code>int updateAndGet(IntUnaryOperator updateFunction)</code></p>
-<p>与<code>int getAndUpdate(IntUnaryOperator updateFunction)</code>类似，只是返回值为<code>value</code>更新后的值。</p>
-</li>
-<li>
-<p><code>int getAndAccumulate(int x, IntBinaryOperator accumulatorFunction)</code></p>
-<p>原子性更新<code>value</code>值，返回<code>value</code>更新前的值</p>
-<pre><code class="language-java">AtomicInteger ai = new AtomicInteger(10);
-// left = 10, right = 5
-ai.getAndAccumulate(5, (left, right) -&gt; left + right - 1);
-assert ai.get() == 14;
+<h2 id="mvc配置类">MVC配置类</h2>
+<h3 id="方式一">方式一</h3>
+<pre><code class="language-java">@EnableWebMvc
+@ComponentScan(
+	basePackages = &quot;com.shyer.controller&quot;
+)
+public class WebConfig {
+  
+}
 </code></pre>
-</li>
-<li>
-<p><code>int accumulateAndGet(int x, IntBinaryOperator accumulatorFunction)</code></p>
-<p>与<code>int getAndAccumulate(int x, IntBinaryOperator accumulatorFunction)</code>类似，只是返回<code>value</code>更新后的值。</p>
-</li>
-</ul>
-</li>
-<li>
-<p>其他方法</p>
-<ul>
-<li>
-<p><code>void set(int newValue)</code></p>
-<p>修改<code>value</code>的值为<code>newValue</code></p>
-</li>
-<li>
-<p><code>void lazySet(int newValue)</code></p>
-<p><code>volatile</code>将<code>value</code>强制刷到主内存中，归功于<code>volatile</code>底层的内存屏障，它会在设置<code>value</code>的时候创建hanppens-before edges，而<code>lazySet</code>是通过<code>Unsafe</code>根据<code>value</code>初始化时计算出来的偏移量找到<code>value</code>的地址，然后调用本地方法进行修改，这样就不会创建hanppens-before edges，但也因此<code>lazySet</code>不能保证<code>value</code>的立即可见。PS：底层的东西其实还不太懂，后续研究，单独写一篇。</p>
-<figure data-type="image" tabindex="1"><img src="https://shyer31.github.io/post-images/1627469432064.png" alt="" loading="lazy"></figure>
-</li>
-</ul>
-</li>
-</ul>
+<h3 id="方式二">方式二</h3>
+<blockquote>
+<p>实现 <code>WebMvcConfigurer</code> 接口。可以实现该接口的方法实现扩展配置。</p>
+</blockquote>
+<pre><code class="language-java">@EnableWebMvc
+@ComponentScan(
+        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;}
+)
+public class SpringMvcConfig implements WebMvcConfigurer {
+  
+}
+</code></pre>
+<h3 id="方式三">方式三</h3>
+<blockquote>
+<p>继承 <code>WebMvcConfigurationSupport</code> 方法，这种方式可以不用配置 <code>@EnableWebMvc</code> 注解。可以重写该类的方法实现扩展配置。</p>
+</blockquote>
+<pre><code class="language-java">@ComponentScan(
+        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;}
+)
+public class SpringMvcConfig extends WebMvcConfigurationSupport {
+}
+</code></pre>
+<h2 id="异常处理器">异常处理器</h2>
+<h3 id="方式一-2">方式一</h3>
+<pre><code class="language-java">@ControllerAdvice
+public class ExceptionController {
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public String handle(Exception ex, Model model) {
+        ex.printStackTrace();
+        return &quot;error&quot;;
+    }
+}
+</code></pre>
+<pre><code class="language-java">@EnableWebMvc
+@ComponentScan(
+        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;}
+)
+public class SpringMvcConfig {
+  
+}
+</code></pre>
+<h3 id="方式二-2">方式二</h3>
+<pre><code class="language-java">@EnableWebMvc
+@ComponentScan(
+        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;}
+)
+public class SpringMvcConfig implements WebMvcConfigurer {
+    /**
+     * 异常处理
+     */
+    @Override
+    public void configureHandlerExceptionResolvers(List&lt;HandlerExceptionResolver&gt; resolvers) {
+        SimpleMappingExceptionResolver exceptionResolver = new SimpleMappingExceptionResolver();
+        
+        // 异常对应的错误页面
+        Properties properties = new Properties();
+        properties.setProperty(ArithmeticException.class.getName(), &quot;error&quot;);
+        exceptionResolver.setExceptionMappings(properties);
+        // 异常信息在request域中的key名
+        exceptionResolver.setExceptionAttribute(&quot;ex&quot;);
+    }
+}
+</code></pre>
+<h2 id="拦截器">拦截器</h2>
+<h3 id="方式一-3">方式一</h3>
+<pre><code class="language-java">public class FirstInterceptor implements HandlerInterceptor {    @Override    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {        System.out.println(FirstInterceptor.class + &quot; -&gt; preHandle&quot;);        return true;    }    @Override    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {        System.out.println(FirstInterceptor.class + &quot; -&gt; postHandle&quot;);    }    @Override    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {        System.out.println(FirstInterceptor.class + &quot; -&gt; afterCompletion&quot;);    }}
+</code></pre>
+<h3 id="方式二-3">方式二</h3>
+<pre><code class="language-java">public class ThirdInterceptor implements WebRequestInterceptor {    @Override    public void preHandle(WebRequest request) throws Exception {        System.out.println(ThirdInterceptor.class + &quot; -&gt; preHandle&quot;);    }    @Override    public void postHandle(WebRequest request, ModelMap model) throws Exception {        System.out.println(ThirdInterceptor.class + &quot; -&gt; postHandle&quot;);    }    @Override    public void afterCompletion(WebRequest request, Exception ex) throws Exception {        System.out.println(ThirdInterceptor.class + &quot; -&gt; afterCompletion&quot;);    }}
+</code></pre>
+<h3 id="生效">生效</h3>
+<pre><code class="language-java">@EnableWebMvc@ComponentScan(        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 配置拦截器     */    @Override    public void addInterceptors(InterceptorRegistry registry) {        registry.addInterceptor(new FirstInterceptor()).addPathPatterns(&quot;/**&quot;);        registry.addInterceptor(new SecondInterceptor());        registry.addWebRequestInterceptor(new ThirdInterceptor());    }}
+</code></pre>
+<h2 id="静态资源处理">静态资源处理</h2>
+<h3 id="配置">配置</h3>
+<pre><code class="language-java">@EnableWebMvc@ComponentScan(        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 静态资源处理 default-servlet-handler     */    @Override    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {        configurer.enable();    }}
+</code></pre>
+<h2 id="视图解析器">视图解析器</h2>
+<h3 id="html">html</h3>
+<blockquote>
+<p>这里使用的是thymeleaf模版引擎</p>
+</blockquote>
+<pre><code class="language-java">public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {    /**     * Spring配置     */    @Override    protected Class&lt;?&gt;[] getRootConfigClasses() {        return new Class[]{SpringConfig.class};    }}
+</code></pre>
+<pre><code class="language-java">@EnableWebMvc@ComponentScan(        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /*****************************************************     ********************** 视图解析器 *********************     *****************************************************/    @Bean    public ITemplateResolver templateResolver() {        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(webApplicationContext.getServletContext());        templateResolver.setPrefix(&quot;/WEB-INF/templates/&quot;);        templateResolver.setSuffix(&quot;.html&quot;);        templateResolver.setCharacterEncoding(&quot;UTF-8&quot;);        templateResolver.setTemplateMode(TemplateMode.HTML);        return templateResolver;    }    @Bean    public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {        SpringTemplateEngine templateEngine = new SpringTemplateEngine();        templateEngine.setTemplateResolver(templateResolver);        return templateEngine;    }    @Bean    public ViewResolver viewResolver(SpringTemplateEngine templateEngine) {        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();        viewResolver.setCharacterEncoding(&quot;UTF-8&quot;);        viewResolver.setTemplateEngine(templateEngine);        return viewResolver;    }}
+</code></pre>
+<h2 id="视图控制器">视图控制器</h2>
+<pre><code class="language-java">@EnableWebMvc@ComponentScan(        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 视图控制器     */    @Override    public void addViewControllers(ViewControllerRegistry registry) {        registry.addViewController(&quot;/&quot;).setViewName(&quot;index&quot;);    }}
+</code></pre>
+<h2 id="文件上传解析器">文件上传解析器</h2>
+<pre><code class="language-java">@EnableWebMvc@ComponentScan(        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 文件上传解析器     */    @Bean    public MultipartResolver multipartResolver() {        return new CommonsMultipartResolver();    }}
+</code></pre>
 
             </div>
             
@@ -706,7 +767,7 @@ assert ai.get() == 14;
     </li>
     <li class="post-copyright-link">
       <strong class="language" data-lan="link">本文链接：</strong>
-      <a href="https://shyer31.github.io/post/atomics/" title="原子类">https://shyer31.github.io/post/atomics/</a>
+      <a href="https://shyer31.github.io/post/springmvc-anno-config/" title="SpringMVC 注解配置使用">https://shyer31.github.io/post/springmvc-anno-config/</a>
     </li>
     <li class="post-copyright-license">
       <strong class="language" data-lan="copyright">版权声明： </strong>
@@ -715,23 +776,19 @@ assert ai.get() == 14;
   </ul>
   <div class="tags">
     
-      <a href="https://shyer31.github.io/tag/java/"># Java</a>
+      <a href="https://shyer31.github.io/tag/spring5/"># Spring5</a>
     
-      <a href="https://shyer31.github.io/tag/juc/"># JUC</a>
+      <a href="https://shyer31.github.io/tag/java/"># Java</a>
     
   </div>
   <div class="nav">
     <div class="nav-prev">
       
-        <i class="fa fa-chevron-left"></i>
-        <a class="nav-pc-next" title="Spring完全注解式开发 - 01" href="https://shyer31.github.io/post/spring-anno-01/">Spring完全注解式开发 - 01</a class="nav-pc-next">
-        <a class="nav-mobile-prev" title="Spring完全注解式开发 - 01" href="https://shyer31.github.io/post/spring-anno-01/">上一篇</a>
-      
     </div>
     <div class="nav-next">
       
-        <a class="nav-pc-next" title="CountDownLatch和CyclicBarrier" href="https://shyer31.github.io/post/countdownlatch/">CountDownLatch和CyclicBarrier</a>
-        <a class="nav-mobile-next" title="CountDownLatch和CyclicBarrier" href="https://shyer31.github.io/post/countdownlatch/">下一篇</a>
+        <a class="nav-pc-next" title="Spring完全注解式开发 - 01 - demo" href="https://shyer31.github.io/post/spring-anno-01-demo/">Spring完全注解式开发 - 01 - demo</a>
+        <a class="nav-mobile-next" title="Spring完全注解式开发 - 01 - demo" href="https://shyer31.github.io/post/spring-anno-01-demo/">下一篇</a>
         <i class="fa fa-chevron-right"></i>
       
     </div>

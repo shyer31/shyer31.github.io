@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://shyer31.github.io</id>
     <title>Shyer</title>
-    <updated>2021-07-30T12:26:05.186Z</updated>
+    <updated>2021-08-19T11:18:50.377Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://shyer31.github.io"/>
     <link rel="self" href="https://shyer31.github.io/atom.xml"/>
@@ -10,6 +10,161 @@
     <logo>https://shyer31.github.io/images/avatar.png</logo>
     <icon>https://shyer31.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Shyer</rights>
+    <entry>
+        <title type="html"><![CDATA[SpringMVC 注解配置使用]]></title>
+        <id>https://shyer31.github.io/post/springmvc-anno-config/</id>
+        <link href="https://shyer31.github.io/post/springmvc-anno-config/">
+        </link>
+        <updated>2021-08-19T11:17:39.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="web配置类">WEB配置类</h2>
+<blockquote>
+<p>取代web.xml</p>
+</blockquote>
+<pre><code class="language-java">public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+    /**
+     * Spring配置
+     */
+    @Override
+    protected Class&lt;?&gt;[] getRootConfigClasses() {
+        return null;
+    }
+
+    /**
+     * SpringMVC配置
+     */
+    @Override
+    protected Class&lt;?&gt;[] getServletConfigClasses() {
+        return new Class[]{SpringMvcConfig.class};
+    }
+
+    /**
+     * DispatcherServlet拦截路径
+     */
+    @Override
+    protected String[] getServletMappings() {
+        return new String[]{&quot;/&quot;};
+    }
+}
+</code></pre>
+<h2 id="编码">编码</h2>
+<pre><code class="language-java">public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Filter[] getServletFilters() {
+        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+        encodingFilter.setEncoding(&quot;UTF-8&quot;);
+        encodingFilter.setForceResponseEncoding(true);
+
+        HiddenHttpMethodFilter methodFilter = new HiddenHttpMethodFilter();
+
+        return new Filter[]{encodingFilter, methodFilter};
+    }
+}
+</code></pre>
+<h2 id="mvc配置类">MVC配置类</h2>
+<h3 id="方式一">方式一</h3>
+<pre><code class="language-java">@EnableWebMvc
+@ComponentScan(
+	basePackages = &quot;com.shyer.controller&quot;
+)
+public class WebConfig {
+  
+}
+</code></pre>
+<h3 id="方式二">方式二</h3>
+<blockquote>
+<p>实现 <code>WebMvcConfigurer</code> 接口。可以实现该接口的方法实现扩展配置。</p>
+</blockquote>
+<pre><code class="language-java">@EnableWebMvc
+@ComponentScan(
+        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;}
+)
+public class SpringMvcConfig implements WebMvcConfigurer {
+  
+}
+</code></pre>
+<h3 id="方式三">方式三</h3>
+<blockquote>
+<p>继承 <code>WebMvcConfigurationSupport</code> 方法，这种方式可以不用配置 <code>@EnableWebMvc</code> 注解。可以重写该类的方法实现扩展配置。</p>
+</blockquote>
+<pre><code class="language-java">@ComponentScan(
+        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;}
+)
+public class SpringMvcConfig extends WebMvcConfigurationSupport {
+}
+</code></pre>
+<h2 id="异常处理器">异常处理器</h2>
+<h3 id="方式一-2">方式一</h3>
+<pre><code class="language-java">@ControllerAdvice
+public class ExceptionController {
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public String handle(Exception ex, Model model) {
+        ex.printStackTrace();
+        return &quot;error&quot;;
+    }
+}
+</code></pre>
+<pre><code class="language-java">@EnableWebMvc
+@ComponentScan(
+        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;}
+)
+public class SpringMvcConfig {
+  
+}
+</code></pre>
+<h3 id="方式二-2">方式二</h3>
+<pre><code class="language-java">@EnableWebMvc
+@ComponentScan(
+        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;}
+)
+public class SpringMvcConfig implements WebMvcConfigurer {
+    /**
+     * 异常处理
+     */
+    @Override
+    public void configureHandlerExceptionResolvers(List&lt;HandlerExceptionResolver&gt; resolvers) {
+        SimpleMappingExceptionResolver exceptionResolver = new SimpleMappingExceptionResolver();
+        
+        // 异常对应的错误页面
+        Properties properties = new Properties();
+        properties.setProperty(ArithmeticException.class.getName(), &quot;error&quot;);
+        exceptionResolver.setExceptionMappings(properties);
+        // 异常信息在request域中的key名
+        exceptionResolver.setExceptionAttribute(&quot;ex&quot;);
+    }
+}
+</code></pre>
+<h2 id="拦截器">拦截器</h2>
+<h3 id="方式一-3">方式一</h3>
+<pre><code class="language-java">public class FirstInterceptor implements HandlerInterceptor {    @Override    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {        System.out.println(FirstInterceptor.class + &quot; -&gt; preHandle&quot;);        return true;    }    @Override    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {        System.out.println(FirstInterceptor.class + &quot; -&gt; postHandle&quot;);    }    @Override    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {        System.out.println(FirstInterceptor.class + &quot; -&gt; afterCompletion&quot;);    }}
+</code></pre>
+<h3 id="方式二-3">方式二</h3>
+<pre><code class="language-java">public class ThirdInterceptor implements WebRequestInterceptor {    @Override    public void preHandle(WebRequest request) throws Exception {        System.out.println(ThirdInterceptor.class + &quot; -&gt; preHandle&quot;);    }    @Override    public void postHandle(WebRequest request, ModelMap model) throws Exception {        System.out.println(ThirdInterceptor.class + &quot; -&gt; postHandle&quot;);    }    @Override    public void afterCompletion(WebRequest request, Exception ex) throws Exception {        System.out.println(ThirdInterceptor.class + &quot; -&gt; afterCompletion&quot;);    }}
+</code></pre>
+<h3 id="生效">生效</h3>
+<pre><code class="language-java">@EnableWebMvc@ComponentScan(        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 配置拦截器     */    @Override    public void addInterceptors(InterceptorRegistry registry) {        registry.addInterceptor(new FirstInterceptor()).addPathPatterns(&quot;/**&quot;);        registry.addInterceptor(new SecondInterceptor());        registry.addWebRequestInterceptor(new ThirdInterceptor());    }}
+</code></pre>
+<h2 id="静态资源处理">静态资源处理</h2>
+<h3 id="配置">配置</h3>
+<pre><code class="language-java">@EnableWebMvc@ComponentScan(        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 静态资源处理 default-servlet-handler     */    @Override    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {        configurer.enable();    }}
+</code></pre>
+<h2 id="视图解析器">视图解析器</h2>
+<h3 id="html">html</h3>
+<blockquote>
+<p>这里使用的是thymeleaf模版引擎</p>
+</blockquote>
+<pre><code class="language-java">public class MyWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {    /**     * Spring配置     */    @Override    protected Class&lt;?&gt;[] getRootConfigClasses() {        return new Class[]{SpringConfig.class};    }}
+</code></pre>
+<pre><code class="language-java">@EnableWebMvc@ComponentScan(        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /*****************************************************     ********************** 视图解析器 *********************     *****************************************************/    @Bean    public ITemplateResolver templateResolver() {        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(webApplicationContext.getServletContext());        templateResolver.setPrefix(&quot;/WEB-INF/templates/&quot;);        templateResolver.setSuffix(&quot;.html&quot;);        templateResolver.setCharacterEncoding(&quot;UTF-8&quot;);        templateResolver.setTemplateMode(TemplateMode.HTML);        return templateResolver;    }    @Bean    public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {        SpringTemplateEngine templateEngine = new SpringTemplateEngine();        templateEngine.setTemplateResolver(templateResolver);        return templateEngine;    }    @Bean    public ViewResolver viewResolver(SpringTemplateEngine templateEngine) {        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();        viewResolver.setCharacterEncoding(&quot;UTF-8&quot;);        viewResolver.setTemplateEngine(templateEngine);        return viewResolver;    }}
+</code></pre>
+<h2 id="视图控制器">视图控制器</h2>
+<pre><code class="language-java">@EnableWebMvc@ComponentScan(        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 视图控制器     */    @Override    public void addViewControllers(ViewControllerRegistry registry) {        registry.addViewController(&quot;/&quot;).setViewName(&quot;index&quot;);    }}
+</code></pre>
+<h2 id="文件上传解析器">文件上传解析器</h2>
+<pre><code class="language-java">@EnableWebMvc@ComponentScan(        basePackages = {&quot;com.shyer.controller&quot;, &quot;com.shyer.exception&quot;})public class SpringMvcConfig implements WebMvcConfigurer {    /**     * 文件上传解析器     */    @Bean    public MultipartResolver multipartResolver() {        return new CommonsMultipartResolver();    }}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Spring完全注解式开发 - 01 - demo]]></title>
         <id>https://shyer31.github.io/post/spring-anno-01-demo/</id>
